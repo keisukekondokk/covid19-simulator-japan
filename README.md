@@ -1,7 +1,7 @@
 # COVID-19 Simulator in Japan
 
 ## Shiny Web Application
-I developed a spatial Susceptible-Exposed-Infectious-Recovered (SEIR) model to understand how the restriction of interregional mobility affect the spatial spread of the COVID-19 in Japan (Kondo, 2020). The numerical simulations conducted in this study are provide on the web site “COVID-19 Simulator in Japan,” which I developed as a Shiny Application.  
+I developed a spatial Susceptible-Exposed-Infectious-Recovered (SEIR) model to understand how the restriction of interregional mobility affect the spatial spread of the COVID-19 in Japan (Kondo, 2020). The numerical simulations conducted in this study are provided on the web site “COVID-19 Simulator in Japan,” which I developed as a Shiny Application.  
 URL: https://keisuke-kondo.shinyapps.io/covid19-simulator-japan/
 
 [![COVID19 Simulator](www/fig_shinyapp.png "COVID-19 Simulator")](https://keisukekondokk.github.io/covid19-simulator-japan)
@@ -18,7 +18,7 @@ URL: [https://github.com/keisukekondokk/spatial-seir](https://github.com/keisuke
 The copyright of the developed code belongs to Keisuke Kondo.
 
 ### Copyright of Third Parties
-Keisuke Kondo developed the Content based on the information on From-To Analysis on the Regional Economy and Society Analyzing System (RESAS), which is freely available using the RESAS API. The original data of From-To Analysis is based on Mobile Spatial Statistics&reg; of NTT DOCOMO. The shapfile of the 47 prefectures in Japan is taken from the Portal Site of Official Statistics of Japan, e-Stat. Users must confirm the terms of use of the RESAS and the e-Stat, prior to using the Content.
+Keisuke Kondo developed the Content based on the information on From-To Analysis on the Regional Economy and Society Analyzing System (RESAS), which is freely available using the RESAS API. The original data of From-To Analysis is based on Mobile Spatial Statistics&reg; of NTT DOCOMO. The shapefile of the 47 prefectures in Japan is taken from the Portal Site of Official Statistics of Japan, e-Stat. Users must confirm the terms of use of the RESAS and the e-Stat, prior to using the Content.
 
 ### Disclaimer
 <ul>
