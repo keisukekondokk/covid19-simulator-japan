@@ -70,7 +70,7 @@ dfCalendar <- readr::read_csv("csv/input_data/CSV_calendar.csv") %>%
 listTextR0 <- list()
 listTextR0[[1]] <- "This is the <b>rapid covergence case scenario</b> at the early stage with <i><b>time-constant transmission rate</b> &beta;<sub>t</sub></i> for each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>April 7, 2020</b>."
 listTextR0[[2]] <- "This is the <b>modest convergence case scenario</b> in which covergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> for each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>April 7, 2020</b>."
-listTextR0[[3]] <- "This is the <b>modest convergence case scenario</b> in which covergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> for each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>July 1, 2020</b>."
+listTextR0[[3]] <- "This is the <b>modest convergence case scenario</b> in which covergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> for each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>August 17, 2020</b>."
 listTextR0[[4]] <- "This is the <b>modest convergence case scenario</b> in which covergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> for each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>November 4, 2020</b>."
 listTextR0[[5]] <- "This is the <b>worsening case scenario</b> in which covergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> for each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>November 4, 2020</b>."
 listTextR0[[6]] <- "This is the <b>mobility restriction only for Tokyo</b> and the <b>modest convergence case scenario</b> in which covergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> for each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>November 4, 2020</b>."
@@ -80,7 +80,7 @@ dateEndObservedData <- as.Date("2020-11-10", "%Y-%m-%d")
 listDateStartSimulation <- list()
 listDateStartSimulation[[1]] <- as.Date("2020-04-07", "%Y-%m-%d")
 listDateStartSimulation[[2]] <- as.Date("2020-04-07", "%Y-%m-%d")
-listDateStartSimulation[[3]] <- as.Date("2020-07-01", "%Y-%m-%d")
+listDateStartSimulation[[3]] <- as.Date("2020-08-17", "%Y-%m-%d")
 listDateStartSimulation[[4]] <- as.Date("2020-11-04", "%Y-%m-%d")
 listDateStartSimulation[[5]] <- as.Date("2020-11-04", "%Y-%m-%d")
 listDateStartSimulation[[6]] <- as.Date("2020-11-04", "%Y-%m-%d")
