@@ -645,12 +645,12 @@ body <- dashboardBody(
                                  box(width = NULL, title = h2(span(icon("file-signature"), "Terms of Use")), solidHeader = TRUE,
                                      p("Release Date: May 13, 2020", align = "right"),
                                      br(),
-                                     p("Users (hereinafter referred to as the User or Users depending on context) of the content on this web site (hereinafter referred to as the “Content”) are required to conform to the terms of use described herein (hereinafter referred to as the Terms of Use). Furthermore, use of the Content constitutes agreement by the User with the Terms of Use. The contents of the Terms of Use are subject to change without prior notice."),
+                                     p("Users (hereinafter referred to as the User or Users depending on context) of the content on this web site (hereinafter referred to as the Content) are required to conform to the terms of use described herein (hereinafter referred to as the Terms of Use). Furthermore, use of the Content constitutes agreement by the User with the Terms of Use. The contents of the Terms of Use are subject to change without prior notice."),
                                      h3("Copyright"),
                                      p("The copyright of the developed code belongs to Keisuke Kondo."),
                                      h3("Copyright of Third Parties"),
-                                     HTML("<p>Keisuke Kondo developed the Content based on the information on From-To Analysis on the Regional Economy and Society Analyzing System (RESAS), which is freely available using the RESAS-API. The original data of From-To Analysis is based on Mobile Spatial Statistics&reg; of NTT DOCOMO. The shapefile of the 47 prefectures in Japan is taken from the Portal Site of Official Statistics of Japan, e-Stat. Users must confirm the terms of use of the RESAS and the e-Stat, prior to using the Content.</p>"),
-                                     h3("License"),
+                                     HTML("<p>Keisuke Kondo developed the Content based on the information on From-To Analysis on the Regional Economy and Society Analyzing System (RESAS), which is freely available using the RESAS API. The original data of From-To Analysis is based on Mobile Spatial Statistics&reg; of NTT DOCOMO. The shapefile of the 47 prefectures in Japan is taken from the Portal Site of Official Statistics of Japan, e-Stat. Users must confirm the terms of use of the RESAS and the e-Stat, prior to using the Content.</p>"),
+                                     h3("License "),
                                      p("The developed code is released under the MIT License."),
                                      h3("Disclaimer"),
                                      HTML("<ul>
@@ -670,9 +670,10 @@ body <- dashboardBody(
                         column(width = 12,
                                box(width = NULL, title = h2(span(icon("github"), "GitHub")), solidHeader = TRUE,
                                    h3("View code"),
-                                   p("The code is available from Github."),
+                                   p("The code is available on Github."),
                                    p("URL: ", a(href = "https://keisukekondokk.github.io/", "https://keisukekondokk.github.io/", .noWS = "outside"), .noWS = c("after-begin", "before-end")),
-                                   p("URL: ", a(href = "https://github.com/keisukekondokk/spatial-seir", "https://github.com/keisukekondokk/spatial-seir", .noWS = "outside"), .noWS = c("after-begin", "before-end"), " (to be prepared)")
+                                   p("URL: ", a(href = "https://github.com/keisukekondokk/spatial-seir", "https://github.com/keisukekondokk/spatial-seir", .noWS = "outside"), .noWS = c("after-begin", "before-end")),
+                                   p("URL: ", a(href = "https://github.com/keisukekondokk/covid19-simulator-japan", "https://github.com/keisukekondokk/covid19-simulator-japan", .noWS = "outside"), .noWS = c("after-begin", "before-end"))
                                )
                         )
                       )
