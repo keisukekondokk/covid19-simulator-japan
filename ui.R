@@ -113,7 +113,7 @@ body <- dashboardBody(
                                                     "Number of Infectious Persons: \\(I(t)\\)" = 3,
                                                     "Number of Recovered Persons: \\(R(t)\\)" = 4,
                                                     "Number of New Positive Cases: \\(\\varepsilon E(t)\\)" = 5,
-                                                    "Ratio of Force of Infection in the Daytime and Nighttime: \\( [\\tilde{I}(t)/\\tilde{N}(t)]/[I(t)/N] \\)" = 6,
+                                                    "Ratio of Daytime and Nighttime Force of Infection: \\( [\\tilde{I}(t)/\\tilde{N}(t)]/[I(t)/N] \\)" = 6,
                                                     "Time-varying Transmission Rate: \\(\\beta (t)\\)" = 7,
                                                     "Scaling Factor for Transmission Rate: \\(\\alpha (t)\\)" = 8,
                                                     "Effective Reproduction Number: \\(\\mathcal{R}_{e}(t)\\)" = 9
