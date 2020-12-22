@@ -26,10 +26,8 @@ sidebar <- dashboardSidebar(
   #++++++++++++++++++++++++++++++++++++++
   h2(span(style="border-bottom: solid 1px white;", "Settings for Visualization")),
   #NOTE
-  p(span(style="border-bottom: solid 1px white;", "<ALPHA VERSION>")),
-  p("NOTE: The COVID-19 Simulator visualizes the simulation results of the COVID-19 infection spread across 47 prefectures in Japan, 
-    which was conducted by Kondo (2020) using the spatial SEIR model. 
-    Currently, the COVID-19 Simulator offers the four case scenarios."),
+  p(span(style="border-bottom: solid 1px white;", "<BETA VERSION>")),
+  p("NOTE: The COVID-19 Simulator visualizes the simulation results of the spatial spread of COVID-19 across 47 prefectures in Japan based on the spatial SEIR model developed by Kondo (2020). Currently, the COVID-19 Simulator offers the six case scenarios."),
   # Slider bar for Basic Reproductive Ratio R0
   awesomeRadio(
     "radioCase",
@@ -56,7 +54,7 @@ sidebar <- dashboardSidebar(
   br(),
   div(
     actionButton("buttonSimulation", span(icon("play-circle"), "Visualize This Scenario"), class="btn btn-info"),
-    p("Press the Visualize Simulation button after choosing one of the Cases."),
+    p("Press the Visualize This Scenario button after choosing one of the Cases."),
     actionButton("buttonReset", span(icon("sync"), "Initialize"), class="btn btn-info"),
     p("Press the Initialize button when the page fails to load.")
   )
@@ -102,7 +100,7 @@ body <- dashboardBody(
                                               div(
                                                 style = "padding-left:10px;padding-right:10px;",
                                                 h2(span(icon("chart-line"), "Time-Series")),
-                                                p("This page vizualizes time-series data of simulated numbers from the spatial SEIR model by prefectrue."),
+                                                p("This page visualizes time-series data simulated from the spatial SEIR model by prefecture."),
                                                 # Type
                                                 radioButtons(
                                                   "typeOfVarSimulation",
@@ -175,7 +173,7 @@ body <- dashboardBody(
                                                         draggable = FALSE,
                                                         style="z-index:10;",
                                                         h3(span(icon("globe-asia"), "Spatial Distribution")),
-                                                        p("This page vizualizes spatial distribution of simulated number of infectious persons on the slected date."),
+                                                        p("This page visualizes the spatial distribution of simulated number of infectious persons on the selected date."),
                                                         #
                                                         dateInput(
                                                           "dateSimulationMap",
@@ -297,15 +295,16 @@ body <- dashboardBody(
                                      withMathJax(),
                                      #
                                      #
-                                     p("Last updated: November 13, 2020", align = "right"),
+                                     p("Last updated: December 22, 2020", align = "right"),
                                      #
                                      #
                                      h3(style="border-bottom: solid 1px black;", "Spatial SEIR model with Interregional Mobility"),
-                                     p("I developed a spatial Susceptible-Exposed-Infectious-Recovered (SEIR) model to understand how the restriction of interregional mobility affect the spatial spread of the COVID-19 in Japan. The national and local governments requested for the residents to refrain from traveling across 47 prefectures during the state of emergency, which was declared on April 7, 2020. However, we still lack a full understanding of how the interregional mobility restriction prevents the infection expansion in the Japan’s context. Therefore, I am aiming to provide implications for efficient policy measures of interregional mobility restrictions to combat the COVID-19 pandemic."),
-                                     p("Interregional mobility is introduced into the standard SEIR model as a spatial network of contagion because the person-to-person contact causes the spatial spread. In this model, it is assumed that people commute to a region where they work or study in the daytime and return to a region where they reside in the nighttime. The key assumption in this study is that people are exposed to the COVID-19 infection risk in the region where they stay in the daytime."),
-                                     p("A key feature of the spatial SEIR model developed in this study is that residents in one region are exposed to heterogeneous infection risks of the COVID-19. The interregional mobility is treated as the origin-destination (OD) matrix, which can mathematically simplify the spatial network structure. I demonstrate that the spatial SEIR model is reduced to the standard SEIR model when the off-diagonal elements of the OD matrix are zero (i.e., people stay in the regions where they reside). Therefore, our spatial SEIR model can be viewed as a generalized version of the SEIR model.."),
-                                     p("This study exploits interregional mobility data based on the locational information of mobile phone users, which allows us to capture the situation that people commute to workplace in the weekday, but they stay in the residential region or travel to another region in the weekend. This study aims to draw implications for effective control measures based on the simulation analysis. The number of infections is simulated from the spatial SEIR model under the situation that past interregional mobility trend would continue in the future regardless of the COVID-19 pandemic. Comparing it with that from the SEIR model without the interregional mobility, this study evaluates potential impacts of the interregional mobility restriction on the mitigation of the spatial infection spread."),
-                                     p("See Kondo (2020) for the details of the spatial SEIR model with interregional mobility and the parameter setting of the simulation."),
+                                     p("I developed a spatial Susceptible-Exposed-Infectious-Recovered (SEIR) model that analyzes the effect of interregional mobility on the spatial spread of the coronavirus disease 2019 (COVID-19) outbreak in Japan. National and local governments in Japan have requested that residents refrain from traveling across 47 prefectures during the state of emergency, which was declared on April 7 of 2020. Although the interregional mobility restriction can be relaxed to include some outings after the state of emergency, the current low level of lockdown restriction was the first such experience in Japan. Effective control measures that prevent spatial spread of severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2) are urgently demanded, and how non-pharmaceutical interventions (NPIs) such as travel restrictions and social distancing mitigate the epidemic must be investigated. Therefore, how interregional mobility restriction limits the expansion of infection in Japan’s context is largely unknown. Therefore, I am aiming to provide meaningful implications for combating the COVID-19 pandemic through interregional mobility restrictions."),
+                                     p("As the virus spreads through face-to-face contact, a spatial network of contagion was built by introducing interregional mobility into the standard SEIR model. The model assumes that people commute to a region of work or study in the daytime and return to their residential region at night. It further assumes that people are exposed to SARS-CoV-2 infection risk during their daytime activities, meaning that residents in one region are exposed to heterogeneous infection risks of SARS-CoV-2."),
+                                     p("The interregional mobility is mathematically treated as an origin–destination (OD) matrix. I demonstrate that the spatial SEIR model reduces to the standard SEIR model when the off-diagonal elements of the OD matrix are zero (i.e., when people remain in their residential regions). Therefore, this spatial SEIR model can be viewed as a generalized version of the standard SEIR model."),
+                                     p("The daily OD matrix is constructed from the interregional mobility data obtained by geospatial information technology, namely, from the locational information of mobile phone users. These data capture the specific situations of individuals, such as commuting to work on weekdays and remaining in the residential region or traveling to another region during the weekends. By tracking the interregional mobility on each month, day, and time of day throughout one year, I successfully captured the daily interregional mobility flows in the counterfactual situation."),
+                                     p("This study aims to implicate effective control measures based on a simulation analysis. Because mitigating the COVID-19 pandemic is an urgent priority, an epidemic model that guides the planning of efficient control measures is essential when few ideal data are available. The spatial SEIR model assumes that the past interregional mobility trend will continue in future, regardless of how the COVID-19 pandemic evolves. Comparing those simulated from the SEIR model under the free mobility assumption with those simulated under the strict interregional mobility restriction, this study evaluates how restricting movement mitigates the spatial infection spread."),
+                                     p("See Kondo (2020) for the details of the spatial SEIR model with interregional mobility and the scenarios for simulation."),
                                      p("For convenience of reference, the notation used in this study is listed below:"),
                                      HTML('<ul style="line-height:1.75;">
                                        <li>\\(\\mathcal{R}_{0}\\): basic reproductive ratio (2.6 int this study). <br>This ratio indicates average number of secondary cases produced by an infectious individual. </li>
@@ -573,7 +572,6 @@ body <- dashboardBody(
                                </li>
                                </ol>
                                "),
-                       p("Notes: The external links are confirmed as of May 12, 2020. Numbers of positive cases are counted based on date of the press release except in special circumstances. Numbers of positive cases are counted based on the date when the results of the tests were confirmed for Tochigi, Yamanashi, and Kochi."),
                        #
                        h3(style="border-bottom: solid 1px black;", "Spatial Network of Interregional Mobility"),
                        p(
@@ -588,7 +586,7 @@ body <- dashboardBody(
                        p("URL: ", a(href = "https://www.e-stat.go.jp/en", "https://www.e-stat.go.jp/en", .noWS = "outside"), .noWS = c("after-begin", "before-end")),
                        h3(style="border-bottom: solid 1px black;", "Download Data"),
                        p(
-                         "The data used in the COVID-19 Simulator are available from the following links:"
+                         "The data used in the COVID-19 Simulator is available from the following links:"
                        ),
                        h4(
                          span(
@@ -643,13 +641,14 @@ body <- dashboardBody(
                       div(style="margin-left: -30px;margin-right: -30px;",
                           column(width = 12,
                                  box(width = NULL, title = h2(span(icon("file-signature"), "Terms of Use")), solidHeader = TRUE,
+                                     p("Updated Date: December 22, 2020", align = "right"),
                                      p("Release Date: May 13, 2020", align = "right"),
                                      br(),
                                      p("Users (hereinafter referred to as the User or Users depending on context) of the content on this web site (hereinafter referred to as the Content) are required to conform to the terms of use described herein (hereinafter referred to as the Terms of Use). Furthermore, use of the Content constitutes agreement by the User with the Terms of Use. The contents of the Terms of Use are subject to change without prior notice."),
                                      h3("Copyright"),
                                      p("The copyright of the developed code belongs to Keisuke Kondo."),
                                      h3("Copyright of Third Parties"),
-                                     HTML("<p>Keisuke Kondo developed the Content based on the information on From-To Analysis on the Regional Economy and Society Analyzing System (RESAS), which is freely available using the RESAS API. The original data of From-To Analysis is based on Mobile Spatial Statistics&reg; of NTT DOCOMO. The shapefile of the 47 prefectures in Japan is taken from the Portal Site of Official Statistics of Japan, e-Stat. Users must confirm the terms of use of the RESAS and the e-Stat, prior to using the Content.</p>"),
+                                     HTML("<p>Keisuke Kondo developed the Content based on the information on From-To Analysis on the Regional Economy and Society Analyzing System (RESAS), which is freely available using the RESAS API. The original data of From-To Analysis is based on Mobile Spatial Statistics&reg; of NTT DOCOMO. The shapefile of the 47 prefectures in Japan was taken from the Portal Site of Official Statistics of Japan, e-Stat. Users must confirm the terms of use of the RESAS and the e-Stat, prior to using the Content.</p>"),
                                      h3("License "),
                                      p("The developed code is released under the MIT License."),
                                      h3("Disclaimer"),
@@ -670,7 +669,7 @@ body <- dashboardBody(
                         column(width = 12,
                                box(width = NULL, title = h2(span(icon("github"), "GitHub")), solidHeader = TRUE,
                                    h3("View code"),
-                                   p("The code is available on Github."),
+                                   p("The R code and data are available on Github."),
                                    p("URL: ", a(href = "https://keisukekondokk.github.io/", "https://keisukekondokk.github.io/", .noWS = "outside"), .noWS = c("after-begin", "before-end")),
                                    p("URL: ", a(href = "https://github.com/keisukekondokk/spatial-seir", "https://github.com/keisukekondokk/spatial-seir", .noWS = "outside"), .noWS = c("after-begin", "before-end")),
                                    p("URL: ", a(href = "https://github.com/keisukekondokk/covid19-simulator-japan", "https://github.com/keisukekondokk/covid19-simulator-japan", .noWS = "outside"), .noWS = c("after-begin", "before-end"))
