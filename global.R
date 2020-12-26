@@ -749,7 +749,7 @@ prefLinePlot <-
             title = list(text = "Scaling Factor for Transmission Rate"),
             min = 0.0,
             max = 1.0,
-            plotLines = list(list(value = 0.4, color = "red", width = 2, dashStyle = "shortdash")),
+            plotLines = list(list(value = 1/R0, color = "red", width = 2, dashStyle = "shortdash")),
             allowDecimals = TRUE
           ) %>%
           hc_xAxis(categories = dfTemp1$date) %>%
@@ -757,55 +757,7 @@ prefLinePlot <-
                      pointFormat = "Number: {point.y}") %>%
           hc_add_theme(hc_theme_gridlight())
       }   
-      if (inputTypeOfVarSim() == 9) {
-        #Simulated Data from Model with Mobility
-        dfTemp1 <- inputDataFrameResult1 %>%
-          dplyr::filter(prefCode == inputPrefCode0) %>%
-          dplyr::filter(date <= inputDataRangeEndSimulation()) %>%
-          dplyr::mutate(R0t = if_else(date < inputDataRangeStartSimulation, NA_real_, R0t))
-        #Simulated Data from Model without Mobility
-        dfTemp2 <- inputDataFrameResult2 %>%
-          dplyr::filter(prefCode == inputPrefCode0) %>%
-          dplyr::filter(date <= inputDataRangeEndSimulation()) %>%
-          dplyr::mutate(R0t = if_else(date < inputDataRangeStartSimulation, NA_real_, R0t))
-        
-        #Effective Reproduction Number
-        hc <- highchart() %>%
-          hc_add_series(
-            data = dfTemp1,
-            hcaes(numDays-1, (R0t)),
-            type = "line",
-            color = "#f45b5b",
-            name = "Scaling Factor for Transmission Rate",
-            lineWidth = 5,
-            showInLegend = TRUE
-          ) %>%
-          hc_add_series(
-            data = dfTempFilterBeta,
-            hcaes(numDays-1, (R0t)),
-            type = "scatter",
-            name = labelPoint,
-            showInLegend = FALSE,
-            marker = list(
-              radius = 10,
-              symbol = "square",
-              lineWidth = 5,
-              lineColor = "#e0d72d",
-              fillColor = "transparent"
-            )
-          ) %>%
-          hc_yAxis(
-            title = list(text = "Effective Reproduction Number"),
-            min = 0.0,
-            max = 2.5,
-            plotLines = list(list(value = 1, color = "red", width = 2, dashStyle = "shortdash")),
-            allowDecimals = TRUE
-          ) %>%
-          hc_xAxis(categories = dfTemp1$date) %>%
-          hc_tooltip(valueDecimals = 3,
-                     pointFormat = "Number: {point.y}") %>%
-          hc_add_theme(hc_theme_gridlight())
-      }         
+
       #plot
       hc
     }

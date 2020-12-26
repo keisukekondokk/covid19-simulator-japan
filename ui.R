@@ -115,8 +115,7 @@ body <- dashboardBody(
                                                     "Number of New Positive Cases: \\(\\varepsilon E(t)\\)" = 5,
                                                     "Ratio of Daytime and Nighttime Force of Infection: \\( [\\tilde{I}(t)/\\tilde{N}(t)]/[I(t)/N] \\)" = 6,
                                                     "Time-varying Transmission Rate: \\(\\beta (t)\\)" = 7,
-                                                    "Scaling Factor for Transmission Rate: \\(\\alpha (t)\\)" = 8,
-                                                    "Effective Reproduction Number: \\(\\mathcal{R}_{e}(t)\\)" = 9
+                                                    "Scaling Factor for Transmission Rate: \\(\\alpha (t)\\)" = 8
                                                   ),
                                                   selected = 3,
                                                   width = "100%"
@@ -313,9 +312,9 @@ body <- dashboardBody(
                                        <li>\\(\\varepsilon\\): daily probability of an exposed individual becoming infectious, \\(1/\\ell_{\\varepsilon}\\). </li>
                                        <li>\\(\\gamma\\): daily probability that an infected individual recovers, \\(1/\\ell_{\\gamma}\\). </li>
                                        <li>\\(\\beta\\): transmission rate, \\(\\mathcal{R}_{0} \\times \\gamma\\) </li>
-                                       <li>\\(\\beta(t)\\): time-varying transmission rate in date \\(t\\), \\(\\alpha(t) \\times \\beta\\) </li>
-                                       <li>\\(\\alpha(t)\\): degree of non-pharmaceutical interventions in date \\(t\\), \\( \\alpha(t) \\in (0, 1) \\) </li>
-                                       <li>\\(\\mathcal{R}_{e}(t)\\): effective reproducation rate in date \\(t\\), \\(\\alpha(t) \\times \\mathcal{R}_{0}\\) </li>
+                                       <li>\\(\\beta(t)\\): time-varying transmission rate on date \\(t\\), \\(\\alpha(t) \\times \\beta\\) </li>
+                                       <li>\\(\\alpha(t)\\): degree of non-pharmaceutical interventions on date \\(t\\), \\( \\alpha(t) \\in (0, 1) \\) </li>
+                                       <li>\\(\\mathcal{R}_{e}(t)\\): effective reproducation rate on date \\(t\\), \\(\\alpha(t) \\times \\mathcal{R}_{0} \\times S(t) / N\\) </li>
                                        <li>\\(t\\): period of time. The unit of time period is daily. </li>
                                        <li>\\(m\\): number of total regions. This simulation considers 47 prefectures in Japan.</li>
                                        <li>\\(N\\): national total population, \\(N = \\sum^{m}_{k=1} N_{k} = \\sum^{m}_{k=1} \\tilde{N}_{k}(t) \\)</li>

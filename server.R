@@ -63,12 +63,10 @@ server <- function(input, output, session){
     dfResults1Long <- listResult1[[idx]] %>%
       dplyr::mutate(date = lubridate::ymd(date)) %>%
       dplyr::mutate(Alpha = Beta/beta0) %>%
-      dplyr::mutate(R0t = Alpha*R0) %>%
       dplyr::left_join(dfInfo, by = c("date", "prefCode"))
     dfResults2Long <- listResult2[[idx]] %>%
       dplyr::mutate(date = lubridate::ymd(date)) %>%
       dplyr::mutate(Alpha = Beta/beta0) %>%
-      dplyr::mutate(R0t = Alpha*R0) %>%
       dplyr::left_join(dfInfo, by = c("date", "prefCode"))
     
     ## ++++++++++++++++++++++++++++++++++++++++++
