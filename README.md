@@ -11,7 +11,6 @@ The R code and data used in Kondo (2020) are available on GitHub.
 URL: [https://github.com/keisukekondokk/spatial-seir](https://github.com/keisukekondokk/spatial-seir)
 
 ## Terms of Use
-
 Users (hereinafter referred to as the User or Users depending on context) of the content on this web site (hereinafter referred to as the Content) are required to conform to the terms of use described herein (hereinafter referred to as the Terms of Use). Furthermore, use of the Content constitutes agreement by the User with the Terms of Use. The contents of the Terms of Use are subject to change without prior notice.
 
 ### Copyright
@@ -33,7 +32,6 @@ Senior Fellow, Research Institute of Economy, Trade and Industry
 Email: kondo-keisuke@rieti.go.jp  
 URL: https://sites.google.com/site/keisukekondokk/  
 
-
 ## Reference
-Kondo, Keisuke (2020) "Simulating the Impacts of Interregional Mobility Restriction on Spatial Spread of COVID-19 in Japan," RIETI Discussion Paper (forthcoming)  
-https://www.rieti.go.jp/  
+Kondo, Keisuke (2020) "Simulating the Impacts of Interregional Mobility Restriction on the Spatial Spread of COVID-19 in Japan," RIETI Discussion Paper No. 20-E-089  
+URL: https://www.rieti.go.jp/en/publications/summary/20120005.html  
