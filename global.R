@@ -64,16 +64,16 @@ dfPop <- readr::read_csv("csv/input_data/CSV_pop_by_pref_201910.csv")
 
 #Calendar for Weekday Weekend
 dfCalendar <- readr::read_csv("csv/input_data/CSV_calendar.csv") %>%
-  dplyr::mutate(date = as.Date(date, "%Y-%m-%d"))
+  dplyr::mutate(date = as.Date(date, "%Y-%m-%d", tz = "Asia/Tokyo"))
 
 #LABEL for Case Scenario
 listTextR0 <- list()
-listTextR0[[1]] <- "This is the <b>rapid covergence case scenario</b> at the early stage with <i><b>time-constant transmission rate</b> &beta;<sub>t</sub></i> in each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>April 7, 2020</b>."
-listTextR0[[2]] <- "This is the <b>modest convergence case scenario</b> in which covergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> in each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>April 7, 2020</b>."
-listTextR0[[3]] <- "This is the <b>modest convergence case scenario</b> in which covergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> in each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>August 17, 2020</b>."
-listTextR0[[4]] <- "This is the <b>modest convergence case scenario</b> in which covergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> in each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>November 4, 2020</b>."
-listTextR0[[5]] <- "This is the <b>worsening case scenario</b> in which covergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> in each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>November 4, 2020</b>."
-listTextR0[[6]] <- "This is the <b>mobility restriction only for Tokyo</b> and the <b>modest convergence case scenario</b> in which covergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> in each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>November 4, 2020</b>."
+listTextR0[[1]] <- "This is the <b>rapid convergence case scenario</b> at the early stage with <i><b>time-constant transmission rate</b> &beta;<sub>t</sub></i> in each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>April 7, 2020</b>."
+listTextR0[[2]] <- "This is the <b>modest convergence case scenario</b> in which convergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> in each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>April 7, 2020</b>."
+listTextR0[[3]] <- "This is the <b>modest convergence case scenario</b> in which convergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> in each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>August 17, 2020</b>."
+listTextR0[[4]] <- "This is the <b>modest convergence case scenario</b> in which convergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> in each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>November 4, 2020</b>."
+listTextR0[[5]] <- "This is the <b>worsening case scenario</b> in which convergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> in each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>November 4, 2020</b>."
+listTextR0[[6]] <- "This is the <b>mobility restriction only for Tokyo</b> and the <b>modest convergence case scenario</b> in which convergence and divergence repeat with <i><b>time-varying transmission rate</b> &beta;<sub>t</sub></i> in each month. See Kondo (2020) for details of the parameter setting. The simulation starts from <b>November 4, 2020</b>."
 
 #Date of Key Events for Simulation
 dateEndObservedData <- as.Date("2020-11-10", "%Y-%m-%d")
