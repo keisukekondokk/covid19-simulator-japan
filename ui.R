@@ -1,6 +1,6 @@
 ## (c) Keisuke Kondo
 ## Date (First Version): 2020-05-05
-## Date (Latest Version): 2020-12-20
+## Date (Latest Version): 2021-05-17
 ##
 ## - global.R
 ## - server.R
@@ -26,24 +26,24 @@ sidebar <- dashboardSidebar(
   #++++++++++++++++++++++++++++++++++++++
   h2(span(style="border-bottom: solid 1px white;", "Settings for Visualization")),
   #NOTE
-  p(span(style="border-bottom: solid 1px white;", "<BETA VERSION>")),
-  p("NOTE: The COVID-19 Simulator visualizes the simulation results of the spatial spread of COVID-19 across 47 prefectures in Japan based on the spatial SEIR model developed by Kondo (2020). Currently, the COVID-19 Simulator offers the six case scenarios."),
+  p("The COVID-19 Simulator visualizes the simulation results of the spatial spread of COVID-19 across 47 prefectures in Japan based on the spatial SEIR model developed by Kondo (2020)."),
   # Slider bar for Basic Reproductive Ratio R0
   awesomeRadio(
     "radioCase",
-    label = h3(span(style="border-bottom: solid 1px white;", icon("hand-point-down"), HTML(paste0("Select one of the following case scenarios:")))),
+    label = h3(span(style="border-bottom: solid 1px white;", icon("hand-point-down"), HTML(paste0("Select one of the following scenarios:")))),
     choices = c(
-      "Case Scenario 1" = 1,
-      "Case Scenario 2" = 2,
-      "Case Scenario 3" = 3,
-      "Case Scenario 4" = 4,
-      "Case Scenario 5" = 5,
-      "Case Scenario 6" = 6
+      "Scenario 1" = 1,
+      "Scenario 2" = 2,
+      "Scenario 3" = 3,
+      "Scenario 4" = 4,
+      "Scenario 5" = 5,
+      "Scenario 6" = 6,
+      "Scenario 7" = 7
     ),
-    selected = 4,
+    selected = 2,
     status = "primary"
   ),
-  box(title = span(style="font-size: 14px", "Explation of this case scenario"),
+  box(title = span(style="font-size: 14px", "Explation of this scenario"),
       status = "primary",
       solidHeader = TRUE,
       width = 12,
@@ -91,35 +91,36 @@ body <- dashboardBody(
                       ## - Spatial Network Data
                       ####################################
                       div(style="margin-left: -30px;margin-right: -30px;",
+                          ## - Time-Series
                           tabBox(width = 12,
                                  #------------------------------------------------
                                  tabPanel(title="Time-Series", icon = icon("chart-line"),
                                           fluidRow(
                                             column(
-                                              width = 3,
+                                              width = 12,
                                               div(
                                                 style = "padding-left:10px;padding-right:10px;",
                                                 h2(span(icon("chart-line"), "Time-Series")),
-                                                p("This page visualizes time-series data simulated from the spatial SEIR model by prefecture."),
-                                                # Type
-                                                radioButtons(
-                                                  "typeOfVarSimulation",
-                                                  label = h3(span(
-                                                    icon("hand-point-down"), "Select variable or parameter:"
-                                                  )),
-                                                  choices = list(
-                                                    "Number of Susceptible Persons: \\(S(t)\\)" = 1,
-                                                    "Number of Exposed Persons: \\(E(t)\\)" = 2,
-                                                    "Number of Infectious Persons: \\(I(t)\\)" = 3,
-                                                    "Number of Recovered Persons: \\(R(t)\\)" = 4,
-                                                    "Number of New Positive Cases: \\(\\varepsilon E(t)\\)" = 5,
-                                                    "Ratio of Daytime and Nighttime Force of Infection: \\( [\\tilde{I}(t)/\\tilde{N}(t)]/[I(t)/N] \\)" = 6,
-                                                    "Time-varying Transmission Rate: \\(\\beta (t)\\)" = 7,
-                                                    "Scaling Factor for Transmission Rate: \\(\\alpha (t)\\)" = 8
-                                                  ),
-                                                  selected = 3,
-                                                  width = "100%"
-                                                ),
+                                                p("This page visualizes time-series data simulated from the spatial SEIR model by prefecture.")                                              )
+                                            ),
+                                            column(
+                                              width = 6,
+                                              div(
+                                                style = "padding-left:10px;padding-right:10px;",
+                                                #Prefecture
+                                                selectInput(
+                                                  "prefCodeLinePlotSim",
+                                                  width = "100%",
+                                                  label = h3(span(icon("chart-line"), "Select prefecture")),
+                                                  choices = listPref0,
+                                                  selected = listPref0[[14]]
+                                                )
+                                              )
+                                            ),
+                                            column(
+                                              width = 6,
+                                              div(
+                                                style = "padding-left:10px;padding-right:10px;",
                                                 #DateRange of Simulation
                                                 dateInput(
                                                   "dateRangeEndSimulation",
@@ -135,31 +136,113 @@ body <- dashboardBody(
                                               )
                                             ),
                                             column(
-                                              width = 9,
+                                              width = 12,
                                               div(style = "margin:10px; clear: both;",
-                                                #Prefecture
-                                                selectInput(
-                                                  "prefCodeLinePlotSim",
-                                                  width = "100%",
-                                                  label = h3(span(icon("chart-line"), "Select prefecture")),
-                                                  choices = listPref0,
-                                                  selected = listPref0[[1]]
-                                                ),
                                                 box(
                                                   width = NULL,
                                                   title = (span(
-                                                    icon("chart-line"), "Predicted Numbers from Spatial SEIR Model"
+                                                    icon("chart-line"), "Scaling Factor of Transmission Rate"
                                                   )),
                                                   solidHeader = TRUE,
                                                   status = "primary",
-                                                  prefLinePlotUI("prefLinePlotEach") %>%
+                                                  prefLinePlot1UI("prefLinePlotEach1") %>%
                                                     withSpinner(color = getOption("spinner.color", default = "#3C8EBC"))
                                                 )
                                               )
-                                            )
-                                          )
+                                            ),
+                                            column(
+                                              width = 12,
+                                              div(style = "margin:10px; clear: both;",
+                                                  box(
+                                                    width = NULL,
+                                                    title = (span(
+                                                      icon("chart-line"), "Number of Susceptible People"
+                                                    )),
+                                                    solidHeader = TRUE,
+                                                    status = "primary",
+                                                    prefLinePlot2UI("prefLinePlotEach2") %>%
+                                                      withSpinner(color = getOption("spinner.color", default = "#3C8EBC"))
+                                                  )
+                                              )
+                                            ),
+                                            column(
+                                              width = 12,
+                                              div(style = "margin:10px; clear: both;",
+                                                  box(
+                                                    width = NULL,
+                                                    title = (span(
+                                                      icon("chart-line"), "Number of Exposed People"
+                                                    )),
+                                                    solidHeader = TRUE,
+                                                    status = "primary",
+                                                    prefLinePlot3UI("prefLinePlotEach3") %>%
+                                                      withSpinner(color = getOption("spinner.color", default = "#3C8EBC"))
+                                                  )
+                                              )
+                                            ),
+                                            column(
+                                              width = 12,
+                                              div(style = "margin:10px; clear: both;",
+                                                  box(
+                                                    width = NULL,
+                                                    title = (span(
+                                                      icon("chart-line"), "Number of Infectious People"
+                                                    )),
+                                                    solidHeader = TRUE,
+                                                    status = "primary",
+                                                    prefLinePlot4UI("prefLinePlotEach4") %>%
+                                                      withSpinner(color = getOption("spinner.color", default = "#3C8EBC"))
+                                                  )
+                                              )
+                                            ),
+                                            column(
+                                              width = 12,
+                                              div(style = "margin:10px; clear: both;",
+                                                  box(
+                                                    width = NULL,
+                                                    title = (span(
+                                                      icon("chart-line"), "Number of Recovered People"
+                                                    )),
+                                                    solidHeader = TRUE,
+                                                    status = "primary",
+                                                    prefLinePlot5UI("prefLinePlotEach5") %>%
+                                                      withSpinner(color = getOption("spinner.color", default = "#3C8EBC"))
+                                                  )
+                                              )
+                                            ),
+                                            column(
+                                              width = 12,
+                                              div(style = "margin:10px; clear: both;",
+                                                  box(
+                                                    width = NULL,
+                                                    title = (span(
+                                                      icon("chart-line"), "Daily Number of New Infections"
+                                                    )),
+                                                    solidHeader = TRUE,
+                                                    status = "primary",
+                                                    prefLinePlot6UI("prefLinePlotEach6") %>%
+                                                      withSpinner(color = getOption("spinner.color", default = "#3C8EBC"))
+                                                  )
+                                              )
+                                            ),
+                                            column(
+                                              width = 12,
+                                              div(style = "margin:10px; clear: both;",
+                                                  box(
+                                                    width = NULL,
+                                                    title = (span(
+                                                      icon("chart-line"), "Ratio of Daytime and Nighttime Force of Infection"
+                                                    )),
+                                                    solidHeader = TRUE,
+                                                    status = "primary",
+                                                    prefLinePlot7UI("prefLinePlotEach7") %>%
+                                                      withSpinner(color = getOption("spinner.color", default = "#3C8EBC"))
+                                                  )
+                                              )
+                                            )                                          )
                                  ),
                                  #------------------------------------------------
+                                 ## - Spatial Distribution
                                  tabPanel(title="Sptial Distribution", icon = icon("globe-asia"),
                                           absolutePanel(id="controls_sd1",
                                                         class = "panel panel-default",
@@ -179,7 +262,7 @@ body <- dashboardBody(
                                                           label = h4(span(icon("calendar"), "Select date:")),
                                                           value = as.Date("2020-08-31", "%Y-%m-%d"),
                                                           min = as.Date("2020-04-01", "%Y-%m-%d"),
-                                                          max = as.Date("2021-08-31", "%Y-%m-%d"),
+                                                          max = as.Date("2022-12-31", "%Y-%m-%d"),
                                                           startview = "year",
                                                           language = "en",
                                                         ),
@@ -192,10 +275,11 @@ body <- dashboardBody(
                                                         ),
                                                         prefMiniLinePlotUI("prefMiniLinePlotEach")
                                           ),
-                                          leafletOutput("cavid19mapSimulated", height = 660) %>%
+                                          leafletOutput("covid19mapSimulated", height = 660) %>%
                                             withSpinner(color = getOption("spinner.color", default = "#3C8EBC"))
                                  ),
                                  #------------------------------------------------
+                                 ## - COVID-19 Data
                                  tabPanel(title="COVID-19 Data Viewer", icon = icon("dashboard"),
                                           absolutePanel(id="controls_db",
                                                         class = "panel panel-default",
@@ -239,6 +323,7 @@ body <- dashboardBody(
                                             withSpinner(color = getOption("spinner.color", default = "#3C8EBC"))
                                  ),
                                  #------------------------------------------------
+                                 ## - Spatial Network Data
                                  tabPanel(title="Spatial Network Data", icon = icon("share-alt"),
                                           absolutePanel(id="controls_sn",
                                                         class = "panel panel-default",
@@ -333,8 +418,8 @@ body <- dashboardBody(
                                        </ul>'),
                                      #
                                      h3(style="border-bottom: solid 1px black;", "References"),
-                                     HTML("<p>Kondo, Keisuke (2020) &quot;The impacts of interregional mobility restriction on spatial spread of COVID-19 in Japan,&quot; RIETI Discussion Paper. (available soon)</p>"),
-                                     p("URL: ", a(href = "https://www.rieti.go.jp/en/index.html", "https://www.rieti.go.jp/en/index.html", .noWS = "outside"), .noWS = c("after-begin", "before-end")),
+                                     HTML("<p>Kondo, Keisuke (2020) &quot;The impacts of interregional mobility restriction on spatial spread of COVID-19 in Japan,&quot; medRxiv, doi: https://doi.org/10.1101/2020.12.28.20248926.</p>"),
+                                       p("URL: ", a(href = "https://doi.org/10.1101/2020.12.28.20248926", "doi: https://doi.org/10.1101/2020.12.28.20248926", .noWS = "outside"), .noWS = c("after-begin", "before-end")),
 
                                  )
                           )
@@ -352,226 +437,20 @@ body <- dashboardBody(
                        title = h2(span(icon("database"), "Data")),
                        solidHeader = TRUE,
                        #
-                       p("Last updated: November 13, 2020", align = "right"),
+                       p("Last updated: May 17, 2021", align = "right"),
                        #
                        h3(style="border-bottom: solid 1px black;", "Cases of COVID-19 by Prefecture"),
-                       p("The positive cases of COVID-19 in each prefecture are taken from official webpage of the each prefectural government. 
-                         These numbers do not necessarily match with those which the Ministry of Health, Labour and Welfare publish each day.
-                         The following link is confirmed as of November 27, 2020."),
-                       HTML("<ol>
-                               <li>Hokkaido<br>
-                               http://www.pref.hokkaido.lg.jp/ <br>
-                               https://www.harp.lg.jp/opendata/dataset/1369.html
-                               </li>
-                               <li>Aomori<br>
-                               https://www.pref.aomori.lg.jp/ <br>
-                               https://opendata.pref.aomori.lg.jp/dataset/1531.html
-                               </li>
-                               <li>Iwate<br>
-                               https://www.pref.iwate.jp/ <br>
-                               https://www.pref.iwate.jp/kurashikankyou/iryou/covid19/index.html
-                               </li>
-                               <li>Miyagi<br>
-                               https://www.pref.miyagi.jp/site/covid-19/<br>
-                               https://www.pref.miyagi.jp/site/covid-19/02.html
-                               </li>
-                               <li>Akita<br>
-                               https://www.pref.akita.lg.jp/ <br>
-                               https://www.pref.akita.lg.jp/pages/archive/47957 
-                               </li>
-                               <li>Yamagata<br>
-                               https://www.pref.yamagata.jp/ <br>
-                               https://www.pref.yamagata.jp/ou/bosai/020072/kochibou/coronavirus/coronavirus.html<br>
-                               https://www.pref.yamagata.jp/ou/kenkofukushi/090001/20130425/shingata_corona.html
-                               </li>
-                               <li>Fukui<br>
-                               https://www.pref.fukui.lg.jp/ <br>
-                               https://www.pref.fukui.lg.jp/doc/kenkou/kansensyo-yobousessyu/corona.html<br>
-                               https://www.pref.fukui.lg.jp/doc/toukei-jouhou/covid-19.html
-                               </li>
-                               <li>Ibaraki<br>
-                               https://www.pref.ibaraki.jp/ <br>
-                               https://www.pref.ibaraki.jp/1saigai/2019-ncov/index.html<br>
-                               https://www.pref.ibaraki.jp/1saigai/2019-ncov/ichiran.html
-                               </li>
-                               <li>Tochigi<br>
-                               http://www.pref.tochigi.lg.jp/ <br>
-                               http://www.pref.tochigi.lg.jp/e04/welfare/hoken-eisei/kansen/hp/coronakensahasseijyoukyou.html
-                               </li>
-                               <li>Gunma<br>
-                               https://www.pref.gunma.jp/ <br>
-                               https://www.pref.gunma.jp/07/z87g_00016.html
-                               </li>
-                               <li>Saitama<br>
-                               https://www.pref.saitama.lg.jp/<br>
-                               https://www.pref.saitama.lg.jp/a0701/covid19/jokyo.html
-                               </li>
-                               <li>Chiba<br>
-                               https://www.pref.chiba.lg.jp/<br>
-                               https://www.pref.chiba.lg.jp/shippei/press/2019/ncov-index.html
-                               </li>
-                               <li>Tokyo<br>
-                               https://www.metro.tokyo.lg.jp/<br>
-                               https://stopcovid19.metro.tokyo.lg.jp/
-                               </li>
-                               <li>Kanagawa<br>
-                               https://www.pref.kanagawa.jp/<br>
-                               https://www.pref.kanagawa.jp/osirase/1369/
-                               </li>
-                               <li>Niigata<br>
-                               https://www.pref.niigata.lg.jp/ <br>
-                               https://www.pref.niigata.lg.jp/sec/kenko/covid19.html
-                               </li>
-                               <li>Toyama<br>
-                               http://www.pref.toyama.jp/<br>
-                               http://www.pref.toyama.jp/cms_sec/1205/kj00021798.html
-                               </li>
-                               <li>Ishikawa<br>
-                               https://www.pref.ishikawa.lg.jp/<br>
-                               https://www.pref.ishikawa.lg.jp/kansen/coronakennai.html
-                               </li>
-                               <li>Fukui<br>
-                               https://www.pref.fukui.lg.jp/<br>
-                               https://www.pref.fukui.lg.jp/doc/kenkou/kansensyo-yobousessyu/corona.html<br>
-                               https://www.pref.fukui.lg.jp/doc/toukei-jouhou/covid-19.html<br>
-                               https://covid19-fukui.com/
-                               </li>
-                               <li>Yamanashi<br>
-                               https://www.pref.yamanashi.jp/<br>
-                               https://www.pref.yamanashi.jp/koucho/coronavirus/info_coronavirus.html<br>
-                               https://www.pref.yamanashi.jp/koucho/coronavirus/info_coronavirus_prevention.html
-                               </li>
-                               <li>Nagano<br>
-                               https://www.pref.nagano.lg.jp/<br>
-                               https://www.pref.nagano.lg.jp/hoken-shippei/kenko/kenko/kansensho/joho/corona-doko.html
-                               </li>
-                               <li>Gifu<br>
-                               https://www.pref.gifu.lg.jp/<br>
-                               https://www.pref.gifu.lg.jp/kinkyu-juyo-joho/shingata_corona_kansendoko.html
-                               </li>
-                               <li>Sizuoka<br>
-                               https://www.pref.shizuoka.jp/<br>
-                               https://www.pref.shizuoka.jp/kinkyu/covid-19.html<br>
-                               https://opendata.pref.shizuoka.jp/dataset/8167.html
-                               </li>
-                               <li>Aichi<br>
-                               https://www.pref.aichi.jp/<br>
-                               https://www.pref.aichi.jp/site/covid19-aichi/<br>
-                               </li>
-                               <li>Mie<br>
-                               https://www.pref.mie.lg.jp/<br>
-                               https://www.pref.mie.lg.jp/YAKUMUS/HP/m0068000066_00002.htm
-                               </li>
-                               <li>Shiga<br>
-                               https://www.pref.shiga.lg.jp/<br>
-                               https://www.pref.shiga.lg.jp/ippan/kenkouiryouhukushi/yakuzi/309252.html<br>
-                               https://www.pref.shiga.lg.jp/ippan/kenkouiryouhukushi/yakuzi/310735.html
-                               </li>
-                               <li>Kyoto<br>
-                               https://www.pref.kyoto.jp/<br>
-                               https://www.pref.kyoto.jp/kentai/news/novelcoronavirus.html
-                               </li>
-                               <li>Osaka<br>
-                               http://www.pref.osaka.lg.jp/<br>
-                               https://covid19-osaka.info/
-                               </li>
-                               <li>Hyogo<br>
-                               https://web.pref.hyogo.lg.jp/<br>
-                               https://web.pref.hyogo.lg.jp/kk03/corona_hasseijyokyo.html
-                               </li>
-                               <li>Nara<br>
-                               http://www.pref.nara.jp/<br>
-                               http://www.pref.nara.jp/55062.htm<br>
-                               http://www.pref.nara.jp/55168.htm
-                               </li>
-                               <li>Wakayama<br>
-                               https://www.pref.wakayama.lg.jp/<br>
-                               https://www.pref.wakayama.lg.jp/prefg/000200/covid19.html<br>
-                               https://wakayama-pref-org.github.io/
-                               </li>
-                               <li>Tottori<br>
-                               https://www.pref.tottori.lg.jp/<br>
-                               https://www.pref.tottori.lg.jp/corona-virus/
-                               </li>
-                               <li>Shimane<br>
-                               https://www.pref.shimane.lg.jp/<br>
-                               https://www.pref.shimane.lg.jp/bousai_info/bousai/kikikanri/shingata_taisaku/new_coronavirus_portal.html<br>
-                               https://www.pref.shimane.lg.jp/medical/yakuji/kansensyo/other/topics/bukan2020.html
-                               </li>
-                               <li>Okayama<br>
-                               https://www.pref.okayama.jp/<br>
-                               https://www.pref.okayama.jp/kinkyu/645925.html
-                               </li>
-                               <li>Hiroshima<br>
-                               https://www.pref.hiroshima.lg.jp/<br>
-                               https://www.pref.hiroshima.lg.jp/site/2019-ncov/<br>
-                               https://www.pref.hiroshima.lg.jp/soshiki/57/covid19-cases.html
-                               </li>
-                               <li>Yamaguchi<br>
-                               https://www.pref.yamaguchi.lg.jp/<br>
-                               https://www.pref.yamaguchi.lg.jp/cms/a10000/korona2020/202004240002.html<br>
-                               https://yamaguchi.stopcovid19.jp/
-                               </li>
-                               <li>Tokushima<br>
-                               https://www.pref.tokushima.lg.jp/<br>
-                               https://www.pref.tokushima.lg.jp/ippannokata/kenko/kansensho/5035331/<br>
-                               https://www.pref.tokushima.lg.jp/ippannokata/kenko/kansensho/5034012/
-                               </li>
-                               <li>Kagawa<br>
-                               https://www.pref.kagawa.lg.jp/<br>
-                               https://www.pref.kagawa.lg.jp/content/dir1/dir1_6/dir1_6_2/wt5q49200131182439.shtml
-                               </li>
-                               <li>Ehime<br>
-                               https://www.pref.ehime.jp/<br>
-                               https://www.pref.ehime.jp/h25500/kansen/covid19.html<br>
-                               https://www.pref.ehime.jp/opendata-catalog/dataset/2174.html
-                               </li>
-                               <li>Kochi<br>
-                               https://www.pref.kochi.lg.jp/<br>
-                               https://www.pref.kochi.lg.jp/soshiki/111301/info-COVID-19.html<br>
-                               https://www.pref.kochi.lg.jp/soshiki/111301/2020041300141.html
-                               </li>
-                               <li>Fukuoka<br>
-                               https://www.pref.fukuoka.lg.jp/<br>
-                               https://www.pref.fukuoka.lg.jp/contents/covid-19-portal.html<br>
-                               https://ckan.open-governmentdata.org/dataset/8a9688c2-7b9f-4347-ad6e-de3b339ef740
-                               </li>
-                               <li>Saga<br>
-                               https://www.pref.saga.lg.jp/<br>
-                               https://www.pref.saga.lg.jp/kiji00373220/index.html
-                               </li>
-                               <li>Nagasaki<br>
-                               https://www.pref.nagasaki.jp/<br>
-                               https://www.pref.nagasaki.jp/bunrui/hukushi-hoken/kansensho/corona_nagasaki/<br>
-                               https://www.pref.nagasaki.jp/bunrui/hukushi-hoken/kansensho/corona_nagasaki/corona_nagasaki_shousai/
-                               </li>
-                               <li>Kumamoto<br>
-                               https://www.pref.kumamoto.jp/ <br>
-                               https://www.pref.kumamoto.jp/kiji_32300.html <br>
-                               https://www.pref.kumamoto.jp/kiji_22038.html <br>
-                               </li>
-                               <li>Oita<br>
-                               https://www.pref.oita.jp/<br>
-                               https://www.pref.oita.jp/site/covid19-oita/<br>
-                               https://data.bodik.jp/dataset/_covid19
-                               </li>
-                               <li>Miyazaki<br>
-                               https://www.pref.miyazaki.lg.jp/ <br>
-                               https://www.pref.miyazaki.lg.jp/covid-19/index.html
-                               </li>
-                               <li>Kagoshima<br>
-                               https://www.pref.kagoshima.jp/<br>
-                               https://www.pref.kagoshima.jp/kenko-fukushi/covid19/index.html<br>
-                               https://www.pref.kagoshima.jp/ae06/kenko-fukushi/kenko-iryo/kansen/kansensho/coronavirus.html
-                               </li>
-                               <li>Okinawa<br>
-                               https://www.pref.okinawa.lg.jp/ <br>
-                               https://www.pref.okinawa.lg.jp/site/chijiko/kohokoryu/koho/2020_new_corona_potal.html<br>
-                               https://www.pref.okinawa.lg.jp/site/hoken/chiikihoken/kekkaku/covid19_hasseijoukyou.html
-                               </li>
-                               </ol>
-                               "),
+                       p("The positive cases of COVID-19 in each prefecture were taken from the NHK (Japan Broadcasting Corporation). 
+                         The following link is confirmed as of May 17, 2021."
+                       ),
+                       p("URL: ", a(href = "https://www3.nhk.or.jp/news/special/coronavirus/data-widget/", "https://www3.nhk.or.jp/news/special/coronavirus/data-widget/", .noWS = "outside"), .noWS = c("after-begin", "before-end")),
                        #
+                       h3(style="border-bottom: solid 1px black;", "Effective Reproduction Number"),
+                       p("The effective reproduction number of COVID-19 was taken from the Toyo Keizai Inc. 
+                         The following link is confirmed as of May 17, 2021."
+                       ),
+                       p("URL: ", a(href = "https://toyokeizai.net/sp/visual/tko/covid19/en.html", "https://toyokeizai.net/sp/visual/tko/covid19/en.html", .noWS = "outside"), .noWS = c("after-begin", "before-end")),
+                         #
                        h3(style="border-bottom: solid 1px black;", "Spatial Network of Interregional Mobility"),
                        p(
                          "Spatial network is considered as a human mobility across 47 prefectures. Interregional mobility data is taken from the Regional Economy and Society Analyzing System (RESAS)."
@@ -582,36 +461,7 @@ body <- dashboardBody(
                        p(
                          "The shapefiles of Japanese prefectures are available from e-Stat (Ministry of Internal Affairs and Communication)"
                        ),
-                       p("URL: ", a(href = "https://www.e-stat.go.jp/en", "https://www.e-stat.go.jp/en", .noWS = "outside"), .noWS = c("after-begin", "before-end")),
-                       h3(style="border-bottom: solid 1px black;", "Download Data"),
-                       p(
-                         "The data used in the COVID-19 Simulator is available from the following links:"
-                       ),
-                       h4(
-                         span(
-                           icon("table"),
-                           "COVID-19 Daily and Cumulative Data of People Testing Positive up to November 10, 2020"
-                         )
-                       ),
-                       downloadButton("downloadDataObs", "Download", class = "btn btn-primary btn-lg"),
-                       h4(
-                         span(
-                           icon("table"),
-                           "Simulation Results from Spatial SEIR Model with Mobility",
-                         )
-                       ),
-                       downloadButton("downloadDataSim1", "Download", class = "btn btn-primary btn-lg"),
-                       h4(
-                         span(
-                           icon("table"),
-                           "Simulation Results from Spatial SEIR Model without Mobility"
-                         )
-                       ),
-                       downloadButton("downloadDataSim2", "Download", class = "btn btn-primary btn-lg"),
-                       h4(span(
-                         icon("table"), "Origin-Destination Flows across 47 Prefectures"
-                       )),
-                       downloadButton("downloadDataFlow", "Download", class = "btn btn-primary btn-lg")
+                       p("URL: ", a(href = "https://www.e-stat.go.jp/en", "https://www.e-stat.go.jp/en", .noWS = "outside"), .noWS = c("after-begin", "before-end"))
                      )
                    ))
              ),

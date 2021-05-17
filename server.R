@@ -57,35 +57,247 @@ server <- function(input, output, session){
     # - gamma: recovery rate
     # - epsilon: incubation rate
 
+    ## ++++++++++++++++++++++++++++++++++++++++++
+    ## LOAD SIMULATION RESULTS
+    ## ++++++++++++++++++++++++++++++++++++++++++
+    #++++++++++++++++++++++++++++++++++++++
     #UPDATE DataFrame
     idx <- as.integer(input$radioCase)
     dateStartSimulation <- listDateStartSimulation[[idx]]
     dfResults1Long <- listResult1[[idx]] %>%
       dplyr::mutate(date = lubridate::ymd(date)) %>%
-      dplyr::mutate(Alpha = Beta/beta0) %>%
       dplyr::left_join(dfInfo, by = c("date", "prefCode"))
     dfResults2Long <- listResult2[[idx]] %>%
       dplyr::mutate(date = lubridate::ymd(date)) %>%
-      dplyr::mutate(Alpha = Beta/beta0) %>%
       dplyr::left_join(dfInfo, by = c("date", "prefCode"))
-    
-    ## ++++++++++++++++++++++++++++++++++++++++++
-    ## END DO SIMULATION
-    ## ++++++++++++++++++++++++++++++++++++++++++
-    
+
     ## ++++++++++++++++++++++++++++++++++++++++++
     ## MAKE FIGURES USING SIMULATION RESULTS
     ## ++++++++++++++++++++++++++++++++++++++++++
+
+    #++++++++++++++++++++++++++++++++++++++
+    #linePlot using simulated data in tabPanel Time-Series
+    inputDateRangeStartSimulation <- dateStartSimulation
+    inputDateRangeEndSimulation <- reactive(input$dateRangeEndSimulation)
+    inputCase <- as.integer(input$radioCase)
+    
+    #Update Time-Series Line
+    observeEvent(input$prefCodeLinePlotSim, {
+    
+      #DataFrame
+      dfCovidPanelPref <- dfCovidPanel %>%
+        dplyr::filter(prefCode == as.integer(stringr::str_sub(input$prefCodeLinePlotSim, 1, 2))) %>%
+        dplyr::filter(date <= dateEndObservedData) %>%
+        dplyr::mutate(numDays = row_number())
+      dfResults1LongPref <- dfResults1Long %>%
+        dplyr::filter(prefCode == as.integer(stringr::str_sub(input$prefCodeLinePlotSim, 1, 2)))
+      dfResults2LongPref <- dfResults2Long %>%
+        dplyr::filter(prefCode == as.integer(stringr::str_sub(input$prefCodeLinePlotSim, 1, 2)))
+
+      #LABEL
+      if(inputCase == 1){
+        labelLine0 <- "Observed Data"
+        labelLine1 <- "Simulation from the model with interregional mobility"
+        labelLine2 <- "Simulation from the model without interregional mobility"
+        inputLabelLine <- c(labelLine0, labelLine1, labelLine2)
+        colorLine0 <- "#2f7ed8"
+        colorLine1 <- "#f45b5b"
+        colorLine2 <- "#25b086"
+        inputColorLine <- c(colorLine0, colorLine1, colorLine2)
+      }
+      if(inputCase == 2){
+        labelLine0 <- "Observed Data"
+        labelLine1 <- "Simulation from the model with interregional mobility"
+        labelLine2 <- "Simulation from the model without interregional mobility"
+        inputLabelLine <- c(labelLine0, labelLine1, labelLine2)
+        colorLine0 <- "#2f7ed8"
+        colorLine1 <- "#f45b5b"
+        colorLine2 <- "#25b086"
+        inputColorLine <- c(colorLine0, colorLine1, colorLine2)
+      }
+      if(inputCase == 3){
+        labelLine0 <- "Observed Data"
+        labelLine1 <- "Simulation from the model with interregional mobility at 8 pm"
+        labelLine2 <- "Simulation from the model with interregional mobility at 2 pm"
+        inputLabelLine <- c(labelLine0, labelLine1, labelLine2)
+        colorLine0 <- "#2f7ed8"
+        colorLine1 <- "#483d8b"
+        colorLine2 <- "#f45b5b"
+        inputColorLine <- c(colorLine0, colorLine1, colorLine2)
+      }
+      if(inputCase == 4){
+        labelLine0 <- "Observed Data"
+        labelLine1 <- "Simulation from the model with interregional mobility except infectious persons"
+        labelLine2 <- "Simulation from the model with interregional mobility"
+        inputLabelLine <- c(labelLine0, labelLine1, labelLine2)
+        colorLine0 <- "#2f7ed8"
+        colorLine1 <- "#483d8b"
+        colorLine2 <- "#f45b5b"
+        inputColorLine <- c(colorLine0, colorLine1, colorLine2)
+      }
+      if(inputCase == 5){
+        labelLine0 <- "Observed Data"
+        labelLine1 <- "Simulation from the model with interregional mobility except Greater Tokyo area"
+        labelLine2 <- "Simulation from the model with interregional mobility"
+        inputLabelLine <- c(labelLine0, labelLine1, labelLine2)
+        colorLine0 <- "#2f7ed8"
+        colorLine1 <- "#483d8b"
+        colorLine2 <- "#f45b5b"
+        inputColorLine <- c(colorLine0, colorLine1, colorLine2)
+      }
+      if(inputCase == 6){
+        labelLine0 <- "Observed Data"
+        labelLine1 <- "Simulation from the model with interregional mobility except Greater Osaka area"
+        labelLine2 <- "Simulation from the model with interregional mobility"
+        inputLabelLine <- c(labelLine0, labelLine1, labelLine2)
+        colorLine0 <- "#2f7ed8"
+        colorLine1 <- "#483d8b"
+        colorLine2 <- "#f45b5b"
+        inputColorLine <- c(colorLine0, colorLine1, colorLine2)
+      }
+      if(inputCase == 7){
+        labelLine0 <- "Observed Data"
+        labelLine1 <- "Simulation from the model with interregional mobility except Tokyo and Osaka"
+        labelLine2 <- "Simulation from the model with interregional mobility"
+        inputLabelLine <- c(labelLine0, labelLine1, labelLine2)
+        colorLine0 <- "#2f7ed8"
+        colorLine1 <- "#483d8b"
+        colorLine2 <- "#f45b5b"
+        inputColorLine <- c(colorLine0, colorLine1, colorLine2)
+      }
+          
+      #Scale Factor of Transmision Rate
+      callModule(
+        prefLinePlot1,
+        "prefLinePlotEach1",
+        dfCovidPanelPref,
+        dfResults1LongPref,
+        dfResults2LongPref,
+        inputDateRangeStartSimulation,
+        inputDateRangeEndSimulation,
+        inputLabelLine,
+        inputColorLine
+      )
+      
+      #Number of Susceptible
+      callModule(
+        prefLinePlot2,
+        "prefLinePlotEach2",
+        dfCovidPanelPref,
+        dfResults1LongPref,
+        dfResults2LongPref,
+        inputDateRangeStartSimulation,
+        inputDateRangeEndSimulation,
+        inputLabelLine,
+        inputColorLine
+      )
+      
+      #Number of Exposed
+      callModule(
+        prefLinePlot3,
+        "prefLinePlotEach3",
+        dfCovidPanelPref,
+        dfResults1LongPref,
+        dfResults2LongPref,
+        inputDateRangeStartSimulation,
+        inputDateRangeEndSimulation,
+        inputLabelLine,
+        inputColorLine
+      )
+      
+      #Number of Infectious
+      callModule(
+        prefLinePlot4,
+        "prefLinePlotEach4",
+        dfCovidPanelPref,
+        dfResults1LongPref,
+        dfResults2LongPref,
+        inputDateRangeStartSimulation,
+        inputDateRangeEndSimulation,
+        inputLabelLine,
+        inputColorLine
+      )
+      
+      #Number of Recovered
+      callModule(
+        prefLinePlot5,
+        "prefLinePlotEach5",
+        dfCovidPanelPref,
+        dfResults1LongPref,
+        dfResults2LongPref,
+        inputDateRangeStartSimulation,
+        inputDateRangeEndSimulation,
+        inputLabelLine,
+        inputColorLine
+      )
+
+      #Daily Number of New Infections
+      callModule(
+        prefLinePlot6,
+        "prefLinePlotEach6",
+        dfCovidPanelPref,
+        dfResults1LongPref,
+        dfResults2LongPref,
+        inputDateRangeStartSimulation,
+        inputDateRangeEndSimulation,
+        inputLabelLine,
+        inputColorLine
+      )
+      
+      #Ratio of Daytime and Nighttime Force of Infection
+      callModule(
+        prefLinePlot7,
+        "prefLinePlotEach7",
+        dfCovidPanelPref,
+        dfResults1LongPref,
+        dfResults2LongPref,
+        inputDateRangeStartSimulation,
+        inputDateRangeEndSimulation,
+        inputLabelLine,
+        inputColorLine
+      )
+    })
+    #++++++++++++++++++++++++++++++++++++++
+    #Lineplot using simulated data in tabPanel Spatial Distribution
+    inputDateRangeStartSimulation <- dateStartSimulation
+    inputDateRangeEndSimulation <- reactive(input$dateRangeEndSimulation)
+    inputDateSimulationMap <- reactive(input$dateSimulationMap)
+    
+    #National Total and Each Prefecture
+    observeEvent(input$prefCodeCovid19mapSim, {
+      #DataFrame
+      dfResults1LongPref <- dfResults1Long %>%
+        dplyr::filter(prefCode == as.integer(stringr::str_sub(input$prefCodeCovid19mapSim, 1, 2)))
+      #Module
+      callModule(
+        prefMiniLinePlot,
+        "prefMiniLinePlotEach",
+        dfResults1LongPref,
+        inputDateRangeStartSimulation,
+        inputDateRangeEndSimulation,
+        inputDateSimulationMap
+      )
+    }, ignoreNULL = FALSE)
+    
     #++++++++++++++++++++++++++++++++++++++
     #covid19mapSimulated
-    output$cavid19mapSimulated <- renderLeaflet({
+    output$covid19mapSimulated <- renderLeaflet({
       
       #Load Data
       dfTemp1 <- dfResults1Long %>%
+        dplyr::filter(prefCode != 0) %>%
         dplyr::filter(date == input$dateSimulationMap)
       #Make ShapeFile
       sfTemp1 <- sfPref %>%
-        dplyr::left_join(dfTemp1, by = "prefCode")
+        dplyr::left_join(dfTemp1, by = "prefCode") %>%
+        dplyr::mutate(labelPoly = paste0(labelPref, "<br>", "n = ", round(dI)))
+      
+      #Color
+      qpal <- colorQuantile(palette="YlOrRd", domain = dfTemp1$dI, n = 7)
+      qpal_interval <- 1 / 7
+      qpal_colors <- unique(qpal(sort(dfTemp1$dI))) # hex codes
+      qpal_labs <- round(quantile(dfTemp1$dI, seq(0, 1, qpal_interval))) # depends on n from pal
+      qpal_labs <- paste(lag(qpal_labs), qpal_labs, sep = " - ")[-1] # first lag is NA
       
       #Make Map
       leaflet(sfTemp1) %>%
@@ -101,107 +313,30 @@ server <- function(input, output, session){
         ) %>%
         #Polygon Layer
         addPolygons(
-          fillOpacity = 0,
+          fillOpacity = 0.5,
           stroke = TRUE,
           weight = 0.2,
-          color = "gray",
+          color = ~ qpal(dI),
           layerId = ~ prefCode,
-          label = ~ labelPref,
+          label = ~ lapply(labelPoly, HTML),
           labelOptions = labelOptions(
             style = list("font-weight" = "normal", padding = "3px 8px"),
             textsize = "15px",
             direction = "auto"
           )
         ) %>%
-        #Minicharts Layer
-        addMinicharts(
-          lng = sfTemp1$lon,
-          lat = sfTemp1$lat,
-          chartdata = round(sfTemp1$I),
-          showLabels = TRUE,
-          labelMinSize = 8,
-          labelMaxSize = 56,
-          width = 64,
-          popup = popupArgs(labels = paste("Number of Infectious Individuals"))
-        )
+        addLegend(
+          position="topleft",
+          title = paste(
+            "Daily Number of", 
+            "New Infections",
+            sep = "<br>"
+          ),
+          colors = qpal_colors, 
+          labels = qpal_labs)
     })
     
-    #++++++++++++++++++++++++++++++++++++++
-    #Datatable Download
-    output$downloadDataSim1 <- downloadHandler(
-      filename = function() {
-        paste("simulation_data_from_spatial_seir_model_with_mobility_case",
-              idx,
-              "_",
-              Sys.Date(),
-              ".csv",
-              sep = "")
-      },
-      content = function(con) {
-        dfTemp <- dfResults1Long %>%
-          dplyr::filter(date <= input$dateRangeEndSimulation)
-        readr::write_csv(dfTemp, con)
-      }
-    )
     
-    #++++++++++++++++++++++++++++++++++++++
-    #Datatable Download
-    output$downloadDataSim2 <- downloadHandler(
-      filename = function() {
-        paste("simulation_data_from_spatial_seir_model_without_mobility_case",
-              idx,
-              "_",
-              Sys.Date(),
-              ".csv",
-              sep = "")
-      },
-      content = function(con) {
-        dfTemp <- dfResults2Long %>%
-          dplyr::filter(date <= input$dateRangeEndSimulation)
-        readr::write_csv(dfTemp, con)
-      }
-    )
-
-    #++++++++++++++++++++++++++++++++++++++
-    #linePlot using simulated data in tabPanel Time-Series
-    inputDateRangeStartSimulation <- dateStartSimulation
-    inputDateRangeEndSimulation <- reactive(input$dateRangeEndSimulation)
-    inputTypeOfVarSimulation <- reactive(input$typeOfVarSimulation)
-    inputCase <- as.integer(input$radioCase)
-    
-    #National Total and Each Prefecture
-    observeEvent(input$prefCodeLinePlotSim, {
-      callModule(
-        prefLinePlot,
-        "prefLinePlotEach",
-        dfResults1Long,
-        dfResults2Long,
-        inputCase,
-        as.integer(stringr::str_sub(input$prefCodeLinePlotSim, 1, 2)),
-        inputTypeOfVarSimulation,
-        inputDateRangeStartSimulation,
-        inputDateRangeEndSimulation
-      )
-    })
-    
-    #++++++++++++++++++++++++++++++++++++++
-    #Lineplot using simulated data in tabPanel Spatial Distribution
-    inputDateRangeStartSimulation <- dateStartSimulation
-    inputDateRangeEndSimulation <- reactive(input$dateRangeEndSimulation)
-    inputDateSimulationMap <- reactive(input$dateSimulationMap)
-    
-    #National Total and Each Prefecture
-    observeEvent(input$prefCodeCovid19mapSim, {
-      callModule(
-        prefMiniLinePlot,
-        "prefMiniLinePlotEach",
-        dfResults1Long,
-        as.integer(stringr::str_sub(input$prefCodeCovid19mapSim, 1, 2)),
-        inputDateRangeStartSimulation,
-        inputDateRangeEndSimulation,
-        inputDateSimulationMap
-      )
-    }, ignoreNULL = FALSE)
     ## ++++++++++++++++++++++++++++++++++++++++++
     ## END MAKE FIGURES USING SIMULATION RESULTS
     ## ++++++++++++++++++++++++++++++++++++++++++
@@ -234,6 +369,7 @@ server <- function(input, output, session){
     
     #Load Data
     dfTemp <- dfCovidPanel %>%
+      dplyr::filter(prefCode != 0) %>%
       dplyr::filter(date == input$dateCovidMap)
     #Make ShapeFile
     sfTemp <- sfPref %>%
@@ -413,30 +549,6 @@ server <- function(input, output, session){
   })  
 
   #++++++++++++++++++++++++++++++++++++++
-  #Datatable Download
-  output$downloadDataObs <- downloadHandler(
-    filename = function() {
-      paste("covid19_data_", Sys.Date(), ".csv", sep = "")
-    },
-    content = function(con) {
-      dfTemp <- dfCovidPanel %>%
-        dplyr::filter(date <= dateEndObservedData)
-      readr::write_csv(dfTemp, con)
-    }
-  )
-  
-  #++++++++++++++++++++++++++++++++++++++
-  #Datatable Download
-  output$downloadDataFlow <- downloadHandler(
-    filename = function() {
-      paste("odflow_data_from_resas_", Sys.Date(), ".csv", sep = "")
-    },
-    content = function(con) {
-      readr::write_csv(dfFlow, con)
-    }
-  )
-
-  #++++++++++++++++++++++++++++++++++++++
   #Update DateInput in Spatial Diffusion Map
   observe({
     updateDateInput(
@@ -458,10 +570,10 @@ server <- function(input, output, session){
   
   #++++++++++++++++++++++++++++++++++++++
   #Update pulldown value in Covid-19 Map
-  observeEvent(input$cavid19mapSimulated_shape_click, {
+  observeEvent(input$covid19mapSimulated_shape_click, {
     updateSelectInput(session,
                       "prefCodeCovid19mapSim",
-                      selected = listPref[[input$cavid19mapSimulated_shape_click$id]])
+                      selected = listPref[[input$covid19mapSimulated_shape_click$id]])
   })
   
 }
