@@ -233,7 +233,7 @@ prefBarPlot <-
 #Module UI for Prefecture
 prefLinePlot1UI <- function(id) {
   ns <- NS(id)
-  tagList(highchartOutput(ns("linePlot"), height = "520px"))
+  tagList(highchartOutput(ns("linePlot"), height = "600px"))
 }
 #Module for Prefecture
 prefLinePlot1 <-
@@ -337,7 +337,7 @@ prefLinePlot1 <-
 #Module UI for Prefecture
 prefLinePlot2UI <- function(id) {
   ns <- NS(id)
-  tagList(highchartOutput(ns("linePlot"), height = "520px"))
+  tagList(highchartOutput(ns("linePlot"), height = "600px"))
 }
 #Module for Prefecture
 prefLinePlot2 <-
@@ -458,7 +458,7 @@ prefLinePlot2 <-
 #Module UI for Prefecture
 prefLinePlot3UI <- function(id) {
   ns <- NS(id)
-  tagList(highchartOutput(ns("linePlot"), height = "520px"))
+  tagList(highchartOutput(ns("linePlot"), height = "600px"))
 }
 #Module for Prefecture
 prefLinePlot3 <-
@@ -578,7 +578,7 @@ prefLinePlot3 <-
 #Module UI for Prefecture
 prefLinePlot4UI <- function(id) {
   ns <- NS(id)
-  tagList(highchartOutput(ns("linePlot"), height = "520px"))
+  tagList(highchartOutput(ns("linePlot"), height = "600px"))
 }
 #Module for Prefecture
 prefLinePlot4 <-
@@ -698,7 +698,7 @@ prefLinePlot4 <-
 #Module UI for Prefecture
 prefLinePlot5UI <- function(id) {
   ns <- NS(id)
-  tagList(highchartOutput(ns("linePlot"), height = "520px"))
+  tagList(highchartOutput(ns("linePlot"), height = "600px"))
 }
 #Module for Prefecture
 prefLinePlot5 <-
@@ -817,7 +817,7 @@ prefLinePlot5 <-
 #Module UI for Prefecture
 prefLinePlot6UI <- function(id) {
   ns <- NS(id)
-  tagList(highchartOutput(ns("linePlot"), height = "520px"))
+  tagList(highchartOutput(ns("linePlot"), height = "600px"))
 }
 #Module for Prefecture
 prefLinePlot6 <-
@@ -936,7 +936,7 @@ prefLinePlot6 <-
 #Module UI for Prefecture
 prefLinePlot7UI <- function(id) {
   ns <- NS(id)
-  tagList(highchartOutput(ns("linePlot"), height = "520px"))
+  tagList(highchartOutput(ns("linePlot"), height = "600px"))
 }
 #Module for Prefecture
 prefLinePlot7 <-
